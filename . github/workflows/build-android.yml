@@ -1,1 +1,29 @@
 
+name: Prepare Flispy Android Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download repository
+        uses: actions/checkout@v4
+
+      - name: Install download tools
+        run: sudo apt-get update && sudo apt-get install -y curl unzip
+
+      - name: Download Flispy ZIP
+        run: |
+          mkdir -p /tmp/flispy
+          curl -fL --retry 3 \
+            "https://www.mediafire.com/file/i2tuomwh2gs9n2i/flispy_kitV1.zip/file" \
+            -o /tmp/flispy/flispy.zip
+          file /tmp/flispy/flispy.zip
+          unzip -t /tmp/flispy/flispy.zip
+
+      - name: Show archive contents
+        run: unzip -l /tmp/flispy/flispy.zip
+
